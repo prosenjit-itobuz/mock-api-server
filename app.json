@@ -1,0 +1,7 @@
+{
+  "name": "Mock api server",
+  "description": "Mock api server",
+  "repository": "https://github.com/prosenjit-itobuz/mock-api-server",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"]
+}
