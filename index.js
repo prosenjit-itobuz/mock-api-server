@@ -4,6 +4,16 @@ var cors = require('cors');
 var multer  =   require('multer');
 var app  =   express();
 app.set('port', (process.env.PORT ? process.env.PORT : 5000 || 5000))
+var whitelist = ['https://localhost:4200', 'https://secure.ataata.us']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 app.use(cors());
 app.use(express.static('./public'))
 
