@@ -20,6 +20,24 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions))
 app.use(express.static('./public'))
 
+function errorHandler (err, req, res, next) {
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(500)
+  res.render('error', { error: err })
+}
+app.use(errorHandler)
+
+function clientErrorHandler (err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something failed!' })
+  } else {
+    next(err)
+  }
+}
+app.use(clientErrorHandler)
+
 var storage =   multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, './public/uploads/');
