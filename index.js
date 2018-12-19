@@ -3,6 +3,7 @@ var jsonServer = require('json-server');
 var cors = require('cors');
 var multer  =   require('multer');
 var app  =   express();
+const domainUrl = process.env.domain ? process.env.domain : 'https://mock-api.app.pagespeedup.com';
 
 function errorHandler (err, req, res, next) {
   if (res.headersSent) {
@@ -73,7 +74,7 @@ app.post('/api/upload',function(req,res){
               message: err.message
             });
         }
-        res.json({path: req.file.path.replace('public', '')});
+        res.json({path: req.file.path.replace('public', domainUrl)});
     });
 });
 
