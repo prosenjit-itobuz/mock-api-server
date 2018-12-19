@@ -1,4 +1,8 @@
 {
-  "customModules": [],
+  "customModules": [
+    {
+      "id": 1
+    }
+  ],
   "filepath": []
 }

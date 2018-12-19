@@ -56,7 +56,10 @@ var storage =   multer.diskStorage({
 });
 var upload = multer({ storage : storage}).single('file');
 
-app.use('/api-mock', jsonServer.router('db.json'));
+const mockdataConfig = {
+  noCors: true
+}
+app.use('/api-mock', jsonServer.router('db.json', mockdataConfig));
 
 app.get('/',function(req,res){
       res.sendFile(__dirname + "/index.html");
