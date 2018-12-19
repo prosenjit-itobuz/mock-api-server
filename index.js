@@ -35,7 +35,7 @@ var corsOptions = {
       callback(console.log('Not allowed by CORS'))
     }
   },
-  allowedHeaders: ['Access-Control-Allow-Headers'],
+  allowedHeaders: ['Access-Control-Allow-Headers', 'Content-Type'],
   credentials: true
 }
 app.use(cors(corsOptions));
