@@ -3,22 +3,6 @@ var jsonServer = require('json-server');
 var cors = require('cors');
 var multer  =   require('multer');
 var app  =   express();
-app.set('port', (process.env.PORT ? process.env.PORT : 5000 || 5000))
-var whitelist = ['https://localhost:4200', 'https://secure.ataata.us']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  allowedHeaders: ['Access-Control-Allow-Headers'],
-  credentials: true
-}
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions))
-app.use(express.static('./public'))
 
 function errorHandler (err, req, res, next) {
   if (res.headersSent) {
@@ -27,7 +11,6 @@ function errorHandler (err, req, res, next) {
   res.status(500)
   res.render('error', { error: err })
 }
-app.use(errorHandler)
 
 function clientErrorHandler (err, req, res, next) {
   if (req.xhr) {
@@ -36,7 +19,32 @@ function clientErrorHandler (err, req, res, next) {
     next(err)
   }
 }
+
+function logErrors (err, req, res, next) {
+  console.error(err.stack)
+  next(err)
+}
+
+app.set('port', (process.env.PORT ? process.env.PORT : 5000 || 5000))
+var whitelist = ['https://localhost:4200', 'https://secure.ataata.us', 'http://localhost:5000']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(console.log('Not allowed by CORS'))
+    }
+  },
+  allowedHeaders: ['Access-Control-Allow-Headers'],
+  credentials: true
+}
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions))
+app.use(express.static('./public'))
+app.use(logErrors)
 app.use(clientErrorHandler)
+app.use(errorHandler)
+
 
 var storage =   multer.diskStorage({
   destination: function (req, file, callback) {
@@ -62,7 +70,7 @@ app.post('/api/upload',function(req,res){
               message: err.message
             });
         }
-        res.json({path: req.file.path});
+        res.json({path: req.file.path.replace('public', '')});
     });
 });
 
