@@ -3,6 +3,7 @@ var jsonServer = require('json-server');
 var cors = require('cors');
 var multer  =   require('multer');
 var app  =   express();
+app.set('port', (process.env.PORT || 5000))
 app.use(cors());
 
 var storage =   multer.diskStorage({
@@ -34,6 +35,6 @@ app.post('/api/photo',function(req,res){
 });
 
 
-app.listen(3000,function(){
-    console.log("Working on port 3000");
+app.listen(app.get('port') ,function(){
+    console.log("Working on port " + app.get('port') );
 });
