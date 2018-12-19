@@ -12,7 +12,9 @@ var corsOptions = {
     } else {
       callback(new Error('Not allowed by CORS'))
     }
-  }
+  },
+  allowedHeaders: ['Access-Control-Allow-Headers'],
+  credentials: true
 }
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions))
