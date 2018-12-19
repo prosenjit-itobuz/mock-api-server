@@ -3,18 +3,19 @@ var jsonServer = require('json-server');
 var cors = require('cors');
 var multer  =   require('multer');
 var app  =   express();
-app.set('port', (process.env.PORT || 5000))
+app.set('port', (process.env.PORT ? process.env.PORT : 5000 || 5000))
 app.use(cors());
+app.use(express.static('./public'))
 
 var storage =   multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, './uploads');
+    callback(null, './public/uploads/');
   },
   filename: function (req, file, callback) {
     callback(null, file.fieldname + '-' + Date.now() + file.originalname);
   }
 });
-var upload = multer({ storage : storage}).single('userPhoto');
+var upload = multer({ storage : storage}).single('file');
 
 app.use('/api-mock', jsonServer.router('db.json'));
 
