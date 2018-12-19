@@ -15,6 +15,7 @@ var corsOptions = {
   }
 }
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions))
 app.use(express.static('./public'))
 
 var storage =   multer.diskStorage({
